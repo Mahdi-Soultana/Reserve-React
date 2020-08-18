@@ -1,21 +1,14 @@
 import React, { useEffect } from 'react'
 import axios from "axios";
-
+import ProductList from '../components/Index/ProductList'
+import baseUrl from '../utils/baseUrl'
 function Home({prodects}) {
-  console.log(prodects)
-   
-
-  // async function getProdects() {
-  //   const url = "http://localhost:3000/api/products"
-  //   const prodects = await axios.get(url);
-  //   console.log(prodects.data)
-  // }
-
-  return <>Home</>;
+  
+  return <ProductList products={prodects}/>;
 }
 
 Home.getInitialProps = async () => {
-  const url = "http://localhost:3000/api/products"
+  const url = `${baseUrl}/api/products`
   const prodects = await axios.get(url);
   return {prodects:prodects.data}
 

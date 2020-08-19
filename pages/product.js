@@ -16,7 +16,7 @@ function Product({product}) {
 Product.getInitialProps = async ({ query: { _id } }) => {
   const url = `${baseUrl}/api/product`;
   const payload = { params: { _id } }
-  const response = await axios.get(url, payload);
+  const response = await axios.get(url ,payload);
   return { product: response.data }
 
 }

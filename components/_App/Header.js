@@ -8,7 +8,7 @@ Router.onRouteChangeComplete=()=>NProgress.done();
 Router.onRouteChangeError=()=>NProgress.done();
 
 function Header() {
-  const user = false;
+  const user = true;
   return (
     <Menu stackable fluid id="menu" inverted>
       <Container text>
@@ -52,7 +52,7 @@ function Header() {
           </Link>
           <Menu.Item header>
             <Icon
-              name="signout"
+              name="sign-out"
               size="large"
             />
             Logout

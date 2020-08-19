@@ -49,7 +49,7 @@ function CreateProduct() {
       e.preventDefault();
       setloading(true)
       const mediaUrl = await handelImageUploud()
-  
+      seterror("")
       const url = `${baseUrl}/api/product`;
       const { name, price, description } = product
       console.log({ product })

@@ -6,9 +6,12 @@ import { useRouter } from 'next/router';
 
 
 import { Header, Button, Modal } from 'semantic-ui-react';
-function ProductAttributes({ description, _id}) {
+function ProductAttributes({ description, _id,user}) {
   const [modal, setModal] = useState(false);
   const router = useRouter();
+  const isRoot = user.role === "root"
+  const isAdmin = user.role === "admin"
+  const idAdminOrRoot=(isAdmin||isRoot)
   const handelDelete = async () => {
     const url = `${baseUrl}/api/product`
     const payload = { params: { _id } }
@@ -21,7 +24,8 @@ function ProductAttributes({ description, _id}) {
     <>
       <Header as="h3">About This Product</Header>
       <p>{description}</p>
-      <Button
+      {idAdminOrRoot && <>
+        <Button
         icon="trash alternate outline"
         color="red"
         content="Delete Product "
@@ -44,6 +48,8 @@ function ProductAttributes({ description, _id}) {
           />
         </Modal.Actions>
       </Modal>
+      </>
+    }
     </>
   );
 }

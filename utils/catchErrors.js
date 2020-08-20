@@ -4,19 +4,19 @@ function catchErrors(error, displayError) {
     let errorMsg;
     if (error.response) {
         errorMsg = error.response.data;
-        console.log("Error response", errorMsg)
+        console.error("Error response", errorMsg)
         if(error.response.data.error){
             errorMsg = error.response.data.error.message;
             
         }
     } else if (error.request) {
-        errorMsg = errorMsg.request;
-        console.log("Error request", errorMsg)
+        errorMsg = error.request;
+        console.error("Error request", errorMsg)
 
     } else {
-        errorMsg = errorMsg.message;
+        errorMsg = error.message;
 
-        console.log("Error messsage", errorMsg)
+        console.error("Error messsage", errorMsg)
     }
     displayError(errorMsg)
 }

@@ -1,19 +1,27 @@
 import { Menu, Container, Image, Icon } from "semantic-ui-react";
 import Link from 'next/link';
-import Router,{useRouter} from 'next/router';
+import Router, { useRouter } from 'next/router';
 import NProgress from 'nprogress';
+import { handelLogOut } from '../../utils/auth'
 
-Router.onRouteChangeStart=()=>NProgress.start();
-Router.onRouteChangeComplete=()=>NProgress.done();
-Router.onRouteChangeError=()=>NProgress.done();
+Router.onRouteChangeStart = () => NProgress.start();
+Router.onRouteChangeComplete = () => NProgress.done();
+Router.onRouteChangeError = () => NProgress.done();
 
-function Header() {
-  const user = false;
+function Header({ user }) {
+  const router = useRouter();
+  const isRoot = user && user.role === "root"
+  const isAdmin = user && user.role === "admin"
+  const isAdminOrRoot = (isAdmin || isRoot)
+  //  console.log(user)
+  function isActive(route) {
+    return route === router.pathname;
+  }
   return (
     <Menu stackable fluid id="menu" inverted>
       <Container text>
         <Link href="/">
-          <Menu.Item header>
+          <Menu.Item header active={isActive("/")}>
             <Image
               size="mini"
               src="/static/logo.svg"
@@ -23,7 +31,7 @@ function Header() {
           </Menu.Item>
         </Link>
         <Link href="/cart">
-          <Menu.Item header>
+          <Menu.Item header active={isActive("/cart")}>
             <Icon
               name="cart"
               size="large"
@@ -31,8 +39,8 @@ function Header() {
             Cart
           </Menu.Item>
         </Link>
-        {user && <Link href="/create">
-          <Menu.Item header>
+        {isAdminOrRoot && <Link href="/create">
+          <Menu.Item header active={isActive("/create")}>
             <Icon
               name="add square"
               size="large"
@@ -42,7 +50,7 @@ function Header() {
         </Link>}
         {user ? (<>
           <Link href="/account">
-            <Menu.Item header>
+            <Menu.Item header active={isActive("/account")}>
               <Icon
                 name="user"
                 size="large"
@@ -50,7 +58,7 @@ function Header() {
            Account
           </Menu.Item>
           </Link>
-          <Menu.Item header>
+          <Menu.Item header onClick={handelLogOut}>
             <Icon
               name="sign-out"
               size="large"
@@ -58,8 +66,8 @@ function Header() {
             Logout
           </Menu.Item>
         </>) : (<>
-          <Link href="/signin">
-            <Menu.Item header>
+          <Link href="/login">
+            <Menu.Item header active={isActive("/login")}>
               <Icon
                 name="sign in"
                 size="large"
@@ -69,7 +77,7 @@ function Header() {
           </Link>
 
           <Link href="/signup">
-            <Menu.Item header>
+            <Menu.Item header active={isActive("/signup")}>
               <Icon
                 name="signup"
                 size="large"

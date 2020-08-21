@@ -14,6 +14,9 @@ export default async (req, res) => {
         case "PUT":
             await headelPUTRequast(req, res)
             break
+        case "DELETE":
+            await headelDeleteRequast(req, res)
+            break
         default:
             res.status(405).sned(`Method ${req.method} not allowed`)
             break
@@ -61,5 +64,32 @@ const headelPUTRequast = async (req, res) => {
     } catch (error) {
         console.error(error);
         res.status(403).sned("Please Login again !")
+    }
+}
+
+
+const headelDeleteRequast = async (req, res) => {
+    const { productId } = req.query
+    if (!("authorization" in req.headers)) {
+        res.status(401).send("No Authoriazation Token !")
+    }
+    try {
+        const { userId } = jwt.verify(req.headers.authorization, process.env.JWT_SECRET);
+        const cart=await Cart.findOneAndUpdate({
+            user: userId
+        },
+            { $pull: { products: { product: productId } } }
+            ,
+            { new: true }
+        ).populate({
+            path: "products.product",
+            model: "Product"
+        })
+        res.status(200).json(cart.products)
+
+    } catch (error) {
+        console.error(error);
+        res.status(403).sned("Please Login again !")
+
     }
 }

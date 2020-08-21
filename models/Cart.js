@@ -7,12 +7,12 @@ const CartSchema=new mongoose.Schema({
         type:ObjectId,
         ref:"User"
     },
-    porducts:[
+    products:[
         {quantity:{
             type:Number,
             default:1,
         },
-        Product:{
+        product:{
             type:ObjectId,
             ref:"Product"
         }}
